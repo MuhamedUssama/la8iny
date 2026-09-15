@@ -37,7 +37,11 @@ dependencies:
   get_it:
   injectable: 
   firebase_core: 
-  firebase_auth: 
+  firebase_auth:
+  cloud_firestore:
+  shared_preferences:
+  bloc: 
+  flutter_bloc:
 
 dev_dependencies:
   flutter_test:
