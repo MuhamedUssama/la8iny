@@ -45,6 +45,8 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> logout() async {
     try {
+      emit(state.copyWith(status: AuthStatus.loading));
+
       await _authRepo.logout();
 
       emit(state.copyWith(status: AuthStatus.loggedOut));
