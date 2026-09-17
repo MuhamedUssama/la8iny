@@ -3,6 +3,7 @@ import 'dart:convert';
 class User {
   final String id;
   final String fullname;
+  final String fullnameLowercase;
   final String email;
   final bool isOnline;
   final DateTime lastSeen;
@@ -10,21 +11,30 @@ class User {
   User({
     required this.id,
     required this.fullname,
+    String? fullnameLowercase,
     required this.email,
     this.isOnline = false,
     DateTime? lastSeen,
-  }) : lastSeen = lastSeen ?? DateTime.now();
+  }) : fullnameLowercase = fullnameLowercase ?? fullname.toLowerCase(),
+       lastSeen = lastSeen ?? DateTime.now();
 
   User copyWith({
     String? id,
     String? fullname,
+    String? fullnameLowercase,
     String? email,
     bool? isOnline,
     DateTime? lastSeen,
   }) {
+    final newFullname = fullname ?? this.fullname;
     return User(
       id: id ?? this.id,
-      fullname: fullname ?? this.fullname,
+      fullname: newFullname,
+      fullnameLowercase:
+          fullnameLowercase ??
+          (fullname != null
+              ? newFullname.toLowerCase()
+              : this.fullnameLowercase),
       email: email ?? this.email,
       isOnline: isOnline ?? this.isOnline,
       lastSeen: lastSeen ?? this.lastSeen,
@@ -35,6 +45,7 @@ class User {
     return {
       'id': id,
       'fullname': fullname,
+      'fullname_lowercase': fullnameLowercase,
       'email': email,
       'isOnline': isOnline,
       'lastSeen': lastSeen.toIso8601String(),
@@ -42,9 +53,14 @@ class User {
   }
 
   factory User.fromMap(Map<String, dynamic> map) {
+    final fullname = map['fullname'] ?? '';
     return User(
       id: map['id'] ?? '',
-      fullname: map['fullname'] ?? '',
+      fullname: fullname,
+      fullnameLowercase:
+          map['fullname_lowercase'] ??
+          map['fullnameLowercase'] ??
+          fullname.toLowerCase(),
       email: map['email'] ?? '',
       isOnline: map['isOnline'] ?? false,
       lastSeen: map['lastSeen'] != null
@@ -59,7 +75,7 @@ class User {
 
   @override
   String toString() {
-    return 'User(id: $id, fullname: $fullname, email: $email, isOnline: $isOnline, lastSeen: $lastSeen)';
+    return 'User(id: $id, fullname: $fullname, fullnameLowercase: $fullnameLowercase, email: $email, isOnline: $isOnline, lastSeen: $lastSeen)';
   }
 
   @override
@@ -69,6 +85,7 @@ class User {
     return other is User &&
         other.id == id &&
         other.fullname == fullname &&
+        other.fullnameLowercase == fullnameLowercase &&
         other.email == email &&
         other.isOnline == isOnline &&
         other.lastSeen == lastSeen;
@@ -78,6 +95,7 @@ class User {
   int get hashCode {
     return id.hashCode ^
         fullname.hashCode ^
+        fullnameLowercase.hashCode ^
         email.hashCode ^
         isOnline.hashCode ^
         lastSeen.hashCode;

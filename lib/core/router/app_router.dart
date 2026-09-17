@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
 import 'package:la8iny/core/router/route_names.dart';
 import 'package:la8iny/features/auth/presentation/screens/login_screen.dart';
 import 'package:la8iny/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:la8iny/features/home/presentation/screens/home_screen.dart';
+import 'package:la8iny/features/tabs/chat_tab/presentation/controllers/search_bloc/search_bloc.dart';
+import 'package:la8iny/features/tabs/chat_tab/presentation/screens/search_screen.dart';
 
 class AppRouter {
   const AppRouter._();
@@ -18,6 +22,14 @@ class AppRouter {
 
       case RouteNames.homeScreen:
         return MaterialPageRoute(builder: (context) => const HomeScreen());
+
+      case RouteNames.searchScreen:
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => GetIt.I<SearchBloc>(),
+            child: const SearchScreen(),
+          ),
+        );
 
       default:
         return MaterialPageRoute(builder: (context) => const Scaffold());
