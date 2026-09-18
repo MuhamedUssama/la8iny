@@ -5,4 +5,6 @@ class AppConstants {
 
   // Collection Names:
   static const String usersCollection = 'users';
+  static const String roomsCollection = 'rooms';
+  static const String messagesCollection = 'messages';
 }
