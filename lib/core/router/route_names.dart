@@ -5,4 +5,5 @@ class RouteNames {
   static const String registerScreen = '/register-screen';
   static const String homeScreen = '/home-screen';
   static const String searchScreen = '/search-screen';
+  static const String chatScreen = '/chat-screen';
 }

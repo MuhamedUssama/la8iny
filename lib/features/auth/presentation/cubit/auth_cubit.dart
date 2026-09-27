@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:la8iny/features/auth/presentation/repo/auth_repo.dart';
@@ -36,6 +37,20 @@ class AuthCubit extends Cubit<AuthState> {
         password: password,
       );
       emit(state.copyWith(status: AuthStatus.loggedIn, user: user));
+    } catch (e) {
+      emit(
+        state.copyWith(status: AuthStatus.failure, errorMessage: e.toString()),
+      );
+    }
+  }
+
+  Future<void> getUser() async {
+    emit(state.copyWith(status: AuthStatus.loading));
+
+    try {
+      final user = await _authRepo.getUser();
+      debugPrint('user: $user');
+      emit(state.copyWith(status: .loggedIn, user: user));
     } catch (e) {
       emit(
         state.copyWith(status: AuthStatus.failure, errorMessage: e.toString()),

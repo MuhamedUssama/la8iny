@@ -24,7 +24,7 @@ class La8iny extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => GetIt.I<AuthCubit>(),
+      create: (context) => GetIt.I<AuthCubit>()..getUser(),
       child: MaterialApp(
         title: 'La8iny Chat App',
         debugShowCheckedModeBanner: false,

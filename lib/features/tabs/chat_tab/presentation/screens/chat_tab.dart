@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la8iny/core/router/route_names.dart';
 import 'package:la8iny/core/utils/app_colors.dart';
+import 'package:la8iny/features/tabs/chat_tab/presentation/controllers/chat_cubit/chat_cubit.dart';
 
 class ChatTab extends StatelessWidget {
   const new({super.key});
@@ -18,7 +20,11 @@ class ChatTab extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, RouteNames.searchScreen);
+              Navigator.pushNamed(
+                context,
+                RouteNames.searchScreen,
+                arguments: context.read<ChatCubit>(),
+              );
             },
             icon: const Icon(Icons.search_rounded, size: 28),
           ),

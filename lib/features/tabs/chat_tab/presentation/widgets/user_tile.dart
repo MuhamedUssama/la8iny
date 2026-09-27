@@ -1,17 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:la8iny/core/router/route_names.dart';
 import 'package:la8iny/core/utils/app_colors.dart';
 import 'package:la8iny/features/auth/data/models/user_model.dart';
+import 'package:la8iny/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:la8iny/features/tabs/chat_tab/presentation/controllers/chat_cubit/chat_cubit.dart';
 
 class UserTile extends StatelessWidget {
   final User user;
-  final VoidCallback? onLongPress;
 
-  const new({super.key, required this.user, this.onLongPress});
+  const new({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onLongPress: onLongPress,
+      onLongPress: () async {
+        await context
+            .read<ChatCubit>()
+            .createChatRoom(
+              targetUser: user,
+              currentUser: context.read<AuthCubit>().state.user!,
+            )
+            .then((value) {
+              if (!context.mounted) return;
+              Navigator.pushNamed(context, RouteNames.chatScreen);
+            });
+      },
       contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       leading: Stack(

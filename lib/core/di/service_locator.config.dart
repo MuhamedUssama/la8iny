@@ -28,11 +28,13 @@ import '../../features/tabs/chat_tab/data/data_sources/chat_data_source.dart'
     as _i587;
 import '../../features/tabs/chat_tab/data/data_sources/chat_data_source_impl.dart'
     as _i269;
+import '../../features/tabs/chat_tab/data/repository/chat_repo.dart' as _i356;
 import '../../features/tabs/chat_tab/data/repository/chat_repo_impl.dart'
     as _i323;
+import '../../features/tabs/chat_tab/presentation/controllers/chat_cubit/chat_cubit.dart'
+    as _i76;
 import '../../features/tabs/chat_tab/presentation/controllers/search_bloc/search_bloc.dart'
     as _i819;
-import '../../features/tabs/chat_tab/data/repository/chat_repo.dart' as _i665;
 import 'service_locator.dart' as _i105;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -59,9 +61,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i25.AuthRemoteDataSource>(
       () => _i25.AuthRemoteDataSourceImpl(gh<_i59.FirebaseAuth>()),
     );
-    gh.lazySingleton<_i665.ChatRepo>(
+    gh.lazySingleton<_i356.ChatRepo>(
       () => _i323.ChatRepoImpl(gh<_i587.ChatDataSource>()),
     );
+    gh.factory<_i76.ChatCubit>(() => _i76.ChatCubit(gh<_i356.ChatRepo>()));
+    gh.factory<_i819.SearchBloc>(() => _i819.SearchBloc(gh<_i356.ChatRepo>()));
     gh.lazySingleton<_i307.AuthRepo>(
       () => _i984.AuthRepoImpl(
         gh<_i25.AuthRemoteDataSource>(),
@@ -69,7 +73,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i144.AuthRemoteDataBase>(),
       ),
     );
-    gh.factory<_i819.SearchBloc>(() => _i819.SearchBloc(gh<_i665.ChatRepo>()));
     gh.factory<_i117.AuthCubit>(() => _i117.AuthCubit(gh<_i307.AuthRepo>()));
     return this;
   }

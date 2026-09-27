@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:la8iny/core/utils/app_colors.dart';
+import 'package:la8iny/features/tabs/chat_tab/presentation/controllers/chat_cubit/chat_cubit.dart';
 import 'package:la8iny/features/tabs/chat_tab/presentation/screens/chat_tab.dart';
 import 'package:la8iny/features/tabs/profile_tab/presentation/screens/profile_tab.dart';
 
@@ -13,7 +16,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
 
-  static const List<Widget> _screens = [ChatTab(), ProfileTab()];
+  final List<Widget> _screens = [
+    BlocProvider(create: (_) => GetIt.I<ChatCubit>(), child: const ChatTab()),
+    const ProfileTab(),
+  ];
 
   @override
   Widget build(BuildContext context) {
