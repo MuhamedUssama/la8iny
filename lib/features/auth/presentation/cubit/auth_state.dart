@@ -29,6 +29,8 @@ class AuthState {
     );
   }
 
+  String? get currentUserId => user?.id;
+
   @override
   String toString() =>
       'AuthState(state: $status, user: $user, message: $errorMessage)';

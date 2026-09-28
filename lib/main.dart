@@ -28,6 +28,7 @@ class La8iny extends StatelessWidget {
       child: MaterialApp(
         title: 'La8iny Chat App',
         debugShowCheckedModeBanner: false,
+        theme: ThemeData(scaffoldBackgroundColor: Colors.white),
         onGenerateRoute: AppRouter.onGenerateRoute,
         initialRoute: _getInitialRoute(),
       ),

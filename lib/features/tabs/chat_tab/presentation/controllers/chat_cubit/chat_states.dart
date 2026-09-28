@@ -1,46 +1,87 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 import 'package:la8iny/features/tabs/chat_tab/data/models/chat_room.dart';
 
-enum ChatStatus { initial, loading, created, failure }
+enum CreateChatStatus { initial, loading, created, failure }
 
-extension ChatStatusX on ChatStates {
-  bool get isInitial => status == ChatStatus.initial;
-  bool get isLoading => status == ChatStatus.loading;
-  bool get isCreated => status == ChatStatus.created;
-  bool get isFailure => status == ChatStatus.failure;
+enum ChatRoomsStatus { initial, loading, loaded, empty, failure }
+
+extension CreateChatStatusX on ChatStates {
+  bool get isCreateChatInitial => createChatStatus == CreateChatStatus.initial;
+  bool get isCreateChatLoading => createChatStatus == CreateChatStatus.loading;
+  bool get isCreateChatCreated => createChatStatus == CreateChatStatus.created;
+  bool get isCreateChatFailure => createChatStatus == CreateChatStatus.failure;
+}
+
+extension ChatRoomsStatusX on ChatStates {
+  bool get isRoomInitial => roomsStatus == ChatRoomsStatus.initial;
+  bool get isRoomLoading => roomsStatus == ChatRoomsStatus.loading;
+  bool get isRoomLoaded => roomsStatus == ChatRoomsStatus.loaded;
+  bool get isRoomEmpty => roomsStatus == ChatRoomsStatus.empty;
+  bool get isRoomFailure => roomsStatus == ChatRoomsStatus.failure;
 }
 
 @immutable
 class ChatStates {
-  final ChatStatus status;
+  final ChatRoomsStatus roomsStatus;
+  final CreateChatStatus createChatStatus;
   final ChatRoom? room;
-  final String? failure;
+  final List<ChatRoom> rooms;
+  final String? createChatFailure;
+  final String? roomsFailure;
 
-  const ChatStates({this.room, this.failure, this.status = .initial});
+  const ChatStates({
+    this.room,
+    this.createChatFailure,
+    this.roomsFailure,
+    this.createChatStatus = .initial,
+    this.roomsStatus = .initial,
+    this.rooms = const [],
+  });
 
-  ChatStates copyWith({ChatStatus? status, ChatRoom? room, String? failure}) {
+  ChatStates copyWith({
+    ChatRoomsStatus? roomsStatus,
+    CreateChatStatus? createChatStatus,
+    ChatRoom? room,
+    List<ChatRoom>? rooms,
+    String? createChatFailure,
+    String? roomsFailure,
+  }) {
     return ChatStates(
-      status: status ?? this.status,
+      roomsStatus: roomsStatus ?? this.roomsStatus,
+      createChatStatus: createChatStatus ?? this.createChatStatus,
       room: room ?? this.room,
-      failure: failure ?? this.failure,
+      rooms: rooms ?? this.rooms,
+      createChatFailure: createChatFailure ?? this.createChatFailure,
+      roomsFailure: roomsFailure ?? this.roomsFailure,
     );
   }
 
   @override
-  String toString() =>
-      'ChatStates(status: $status, room: $room, failure: $failure)';
+  String toString() {
+    return 'ChatStates(roomsStatus: $roomsStatus, createChatStatus: $createChatStatus, room: $room, rooms: $rooms, createChatFailure: $createChatFailure, roomsFailure: $roomsFailure)';
+  }
 
   @override
   bool operator ==(covariant ChatStates other) {
     if (identical(this, other)) return true;
 
-    return other.status == status &&
+    return other.roomsStatus == roomsStatus &&
+        other.createChatStatus == createChatStatus &&
         other.room == room &&
-        other.failure == failure;
+        listEquals(other.rooms, rooms) &&
+        other.createChatFailure == createChatFailure &&
+        other.roomsFailure == roomsFailure;
   }
 
   @override
-  int get hashCode => status.hashCode ^ room.hashCode ^ failure.hashCode;
+  int get hashCode {
+    return roomsStatus.hashCode ^
+        createChatStatus.hashCode ^
+        room.hashCode ^
+        rooms.hashCode ^
+        createChatFailure.hashCode ^
+        roomsFailure.hashCode;
+  }
 }

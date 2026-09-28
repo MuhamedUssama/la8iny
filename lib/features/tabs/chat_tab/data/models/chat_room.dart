@@ -98,4 +98,16 @@ class ChatRoom {
         createdAt.hashCode ^
         updatedAt.hashCode;
   }
+
+  /// Returns the other participant in a direct chat, or null if unavailable.
+  User? getOtherUser(String currentUserId) {
+    if (!participants.containsKey(currentUserId)) return null;
+
+    for (final entry in participants.entries) {
+      if (entry.key != currentUserId) {
+        return entry.value;
+      }
+    }
+    return null;
+  }
 }
